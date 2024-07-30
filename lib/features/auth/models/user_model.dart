@@ -1,20 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'user_model.g.dart';
 
 @JsonSerializable()
 class UserModel {
-  int? id;
+  String? id;
   final String name;
   final String email;
-  final String? bio;
-  @JsonKey(name: 'phone')
+  final String job;
   final String phoneNumber;
-  @JsonKey(name: 'avatar')
-  final String? imgUrl;
-  @JsonKey(name: 'fcm_user_id')
-  final String? fcmUserId;
-  final String? imageUrl;
+
 
 
   UserModel({
@@ -22,20 +18,31 @@ class UserModel {
     required this.name,
     required this.phoneNumber,
     required this.email,
-    required this.bio,
-    required this.imgUrl,
-    this.fcmUserId,
-    this.imageUrl,
+    required this.job
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
 
-  // factory UserModel.fromFirestore(DocumentSnapshot documentSnapshot) {
-  //   UserModel userModel = UserModel.fromJson(documentSnapshot.data() as Map<String, dynamic>);
-
-  //   userModel.id = documentSnapshot.id;
-  //   return userModel;
-  // }
+  factory UserModel.fromFirestore(DocumentSnapshot documentSnapshot) {
+    UserModel user = UserModel.fromJson(documentSnapshot.data() as Map<String, dynamic>);
+    user = user.copyWith(id: documentSnapshot.id);
+    return user;
+  }
+  UserModel copyWith({
+    String? id,
+    String? name,
+    String? email,
+    String? job,
+    String? phoneNumber,
+  }) {
+    return UserModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      email: email ?? this.email,
+      job: job ?? this.job,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+    );
+  }
 
   Map<String, dynamic> toJson() => _$UserModelToJson(this);
 }

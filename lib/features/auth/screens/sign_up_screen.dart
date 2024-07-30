@@ -3,11 +3,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:msh_app/core/config/constant/constant.dart';
+import 'package:msh_app/core/config/extensions/firebase.dart';
+import 'package:msh_app/core/config/widgets/custom_appbar.dart';
 import 'package:msh_app/core/config/widgets/elevated_button_custom.dart';
 import 'package:msh_app/core/config/widgets/text_field_custome.dart';
 import 'package:msh_app/features/auth/Services/authentecation_service.dart';
-import 'package:msh_app/home_screen.dart';
-import 'package:path/path.dart' as path;
+import 'package:msh_app/features/auth/Services/user_service.dart';
+import 'package:msh_app/features/auth/models/user_model.dart';
+import 'package:msh_app/features/screens/home_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
   static const String routeName = '/sign-up';
@@ -20,7 +23,7 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController userName = TextEditingController();
   TextEditingController email = TextEditingController();
-  TextEditingController address = TextEditingController();
+  TextEditingController job = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -29,58 +32,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
   File? imageFile;
   var formKey = GlobalKey<FormState>();
   bool isLoading = false;
-  _pickImage() async {
-    final picker = ImagePicker();
-    try {
-      pickedimage = await picker.pickImage(source: ImageSource.gallery);
-      fileName = path.basename(pickedimage!.path);
-      imageFile = File(pickedimage!.path);
-
-      setState(() {});
-    } catch (e) {
-      print(e);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: dark,
-      appBar: AppBar(
-        // backgroundColor: dark,
-        elevation: 0.0,
-        centerTitle: true,
-        title: const Text('انشاء حساب', style: appBarTextStyle),
-      ),
-      body: SingleChildScrollView(
-        child: Form(
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          key: formKey,
-          child: Card(
-            color: white,
-            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Form(
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            key: formKey,
             child: Padding(
               padding: const EdgeInsets.fromLTRB(20, 5, 20, 0),
               child: Column(children: [
-                sizedBoxLarge,
-                InkWell(
-                    onTap: () {
-                      _pickImage();
-                      setState(() {});
-                    },
-                    child: (pickedimage == null)
-                        ? Container(
-                            decoration: BoxDecoration(color: gray, borderRadius: BorderRadius.circular(10)),
-                            padding: const EdgeInsets.all(25),
-                            child: Image.asset(
-                              'assets/images/select_img.png',
-                              width: 75,
-                            ),
-                          )
-                        : Container(
-                            decoration: BoxDecoration(color: gray, borderRadius: BorderRadius.circular(10)),
-                            padding: const EdgeInsets.all(20),
-                            child: Image.file(imageFile!))),
+                const CustomAppBar(title: 'تسجيل كزبون دائم'),
+                Image.asset(
+                  'assets/images/logo.png',
+                  height: MediaQuery.sizeOf(context).height * 0.20,
+                ),
                 const SizedBox(
                   height: 20,
                 ),
@@ -96,58 +64,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    const Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'رقم الهاتف',
-                          style: TextStyle(fontWeight: FontWeight.w800),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                            child: Container(
-                          alignment: Alignment.center,
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                          margin: const EdgeInsets.only(left: 5),
-                          decoration: BoxDecoration(color: blue, borderRadius: BorderRadius.circular(10)),
-                          child: const Text('+963', style: TextStyle(fontWeight: FontWeight.w800)),
-                        )),
-                        Expanded(
-                          flex: 4,
-                          child: TextFieldCustom(
-                              text: 'رقم الهاتف',
-                              controller: phoneController,
-                              icon: Icons.phone,
-                              keyboardType: TextInputType.phone),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                TextFieldCustom(text: 'المهنة', controller: job, icon: Icons.lock),
                 const SizedBox(
                   height: 20,
                 ),
-                TextFieldCustom(text: 'وصف عن ماذا تقدم', controller: address, icon: Icons.description),
+                TextFieldCustom(
+                    text: 'رقم الهاتف',
+                    controller: phoneController,
+                    icon: Icons.phone,
+                    keyboardType: TextInputType.phone),
                 const SizedBox(
                   height: 24,
                 ),
                 !isLoading
                     ? ElevatedButtonCustom(
                         color: blue,
+                        textColor: white,
                         onPressed: () async {
                           if (formKey.currentState!.validate()) {
-                            if (imageFile == null) {
-                              var snackBar = const SnackBar(content: Text('الرجاء اخيار صورة'));
-                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                              return;
-                            }
-
                             //TODO:: login by firebase
 
                             setState(() {
@@ -164,7 +98,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               return;
                             }
 
-                            Navigator.of(context).pushNamedAndRemoveUntil(HomeScreen.routeName, (route) => false);
+                            context.firebaseUser!.updatePhotoURL('client');
+                            context.firebaseUser!.updateDisplayName(userName.text);
+
+                            await UserDbService().creatUser(
+                                user: UserModel(
+                                    email: email.text,
+                                    job: job.text,
+                                    name: userName.text,
+                                    phoneNumber: phoneController.text),
+                                context: context);
+                            setState(() {
+                              isLoading = false;
+                            });
+                            if (mounted) {
+                              Navigator.of(context).pushNamedAndRemoveUntil(HomeScreen.routeName, (route) => false);
+                            }
                           } else {
                             var snackBar = const SnackBar(content: Text('جميع الحقول مطلوبة'));
                             ScaffoldMessenger.of(context).showSnackBar(snackBar);

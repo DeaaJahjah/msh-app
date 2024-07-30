@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:msh_app/core/config/constant/constant.dart';
-import 'package:msh_app/home_screen.dart';
+import 'package:msh_app/features/screens/home_screen.dart';
 import 'package:show_up_animation/show_up_animation.dart';
 // import 'package:stream_chat_flutter_core/stream_chat_flutter_core.dart';
 

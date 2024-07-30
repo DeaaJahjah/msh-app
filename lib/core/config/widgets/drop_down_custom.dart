@@ -20,7 +20,8 @@ class _DropDownCustomState extends State<DropDownCustom> {
       // width: 120,
       decoration: BoxDecoration(
         border: Border.all(color: blue),
-        borderRadius: BorderRadius.circular(15),
+        color: white
+          // borderRadius: BorderRadius.circular(15),
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton(
@@ -39,7 +40,10 @@ class _DropDownCustomState extends State<DropDownCustom> {
               value: items,
               child: Padding(
                 padding: const EdgeInsets.only(right: 10),
-                child: Text(items),
+                child: Text(
+                  items,
+                  style: meduimTextStyle.copyWith(color: background),
+                ),
               ),
             );
           }).toList(),

@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:msh_app/core/config/extensions/firebase.dart';
 import 'package:msh_app/features/auth/Services/authentecation_service.dart';
 import 'package:msh_app/features/auth/screens/login_screen.dart';
+import 'package:msh_app/features/screens/book_ticket_screen.dart';
+import 'package:msh_app/features/screens/create_cv_screen.dart';
+import 'package:msh_app/features/screens/passport_resrvision_screen.dart';
+import 'package:msh_app/features/screens/schooler_ships_screen.dart';
+import 'package:msh_app/features/screens/translate_doc_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   static const String routeName = '/home-screen';
@@ -43,15 +48,35 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 30),
-            InkWell(onTap: () {}, child: Image.asset('assets/images/cv.png')),
+            InkWell(
+                onTap: () {
+                  Navigator.of(context).pushNamed(CreateCvScreen.routeName);
+                },
+                child: Image.asset('assets/images/cv.png')),
             const SizedBox(height: 30),
-            InkWell(onTap: () {}, child: Image.asset('assets/images/translate.png')),
+            InkWell(
+                onTap: () {
+                  Navigator.of(context).pushNamed(TransalteDocScreen.routeName);
+                },
+                child: Image.asset('assets/images/translate.png')),
             const SizedBox(height: 30),
-            InkWell(onTap: () {}, child: Image.asset('assets/images/schooler ship.png')),
+            InkWell(
+                onTap: () {
+                  Navigator.of(context).pushNamed(SchoolerShipsScreen.routeName);
+                },
+                child: Image.asset('assets/images/schooler ship.png')),
             const SizedBox(height: 30),
-            InkWell(onTap: () {}, child: Image.asset('assets/images/travlale.png')),
+            InkWell(
+                onTap: () {
+                  Navigator.of(context).pushNamed(BookTicketScreen.routeName);
+                },
+                child: Image.asset('assets/images/travlale.png')),
             const SizedBox(height: 30),
-            InkWell(onTap: () {}, child: Image.asset('assets/images/passport.png')),
+            InkWell(
+                onTap: () {
+                  Navigator.of(context).pushNamed(PassportReversationScreen.routeName);
+                },
+                child: Image.asset('assets/images/passport.png')),
           ],
         ),
       ),

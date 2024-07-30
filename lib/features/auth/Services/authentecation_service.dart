@@ -16,6 +16,11 @@ class FlutterFireAuthServices {
     Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
   }
 
+  Future<void> signInAnonymously(context) async {
+    await _firebaseAuth.signInAnonymously();
+    // await streamSdk.StreamChatCore.of(context).client.disconnectUser();
+  }
+
   Future<UserCredential?> signIn(
       {required String email, required String password, required BuildContext context}) async {
     try {
