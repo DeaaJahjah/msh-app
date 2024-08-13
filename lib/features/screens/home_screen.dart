@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:msh_app/core/config/extensions/firebase.dart';
 import 'package:msh_app/features/auth/Services/authentecation_service.dart';
 import 'package:msh_app/features/auth/screens/login_screen.dart';
+import 'package:msh_app/features/screens/admin/orders_screen.dart';
 import 'package:msh_app/features/screens/book_ticket_screen.dart';
 import 'package:msh_app/features/screens/create_cv_screen.dart';
 import 'package:msh_app/features/screens/passport_resrvision_screen.dart';
@@ -16,7 +17,6 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(title: const Text('home')),
 
       body: SafeArea(
         child: ListView(
@@ -77,6 +77,14 @@ class HomeScreen extends StatelessWidget {
                   Navigator.of(context).pushNamed(PassportReversationScreen.routeName);
                 },
                 child: Image.asset('assets/images/passport.png')),
+            if (context.firebaseUser != null) ...[
+              const SizedBox(height: 30),
+              InkWell(
+                  onTap: () {
+                    Navigator.of(context).pushNamed(OrdersScreen.routeName);
+                  },
+                  child: Image.asset('assets/images/orders.png')),
+            ]
           ],
         ),
       ),

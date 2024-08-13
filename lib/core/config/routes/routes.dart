@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:msh_app/features/auth/screens/login_screen.dart';
 import 'package:msh_app/features/auth/screens/sign_up_screen.dart';
 import 'package:msh_app/features/screens/add_schoolership_screen.dart';
+import 'package:msh_app/features/screens/admin/orders_screen.dart';
 import 'package:msh_app/features/screens/book_ticket_screen.dart';
 import 'package:msh_app/features/screens/create_cv_screen.dart';
 import 'package:msh_app/features/screens/home_screen.dart';
@@ -41,6 +42,9 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     case TransalteDocScreen.routeName:
       return MaterialPageRoute(builder: ((_) => const TransalteDocScreen()));
 
+
+    case OrdersScreen.routeName:
+      return MaterialPageRoute(builder: ((_) => const OrdersScreen()));
 
       
 

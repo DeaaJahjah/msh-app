@@ -18,8 +18,8 @@ Map<String, dynamic> _$DocumentToJson(Document instance) => <String, dynamic>{
 
 TranslateDocument _$TranslateDocumentFromJson(Map<String, dynamic> json) => TranslateDocument(
       id: json['id'] as String?,
-      clientId: json['clientId'] as String,
-      clientName: json['clientName'] as String,
+      clientId: json['clientId'] as String?,
+      clientName: json['clientName'] as String?,
       phone: json['phone'] as String?,
       documents: (json['documents'] as List<dynamic>).map((e) => Document.fromJson(e as Map<String, dynamic>)).toList(),
       doYouHavePassport: json['doYouHavePassport'] as bool,

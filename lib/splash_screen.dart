@@ -40,6 +40,11 @@ class SplashScreen extends StatelessWidget {
                     'assets/images/logo.png',
                     height: MediaQuery.sizeOf(context).height * 0.70,
                   ),
+                  sizedBoxSmall,
+                  Text(
+                    'Multi service help system for students',
+                    style: meduimTextStyle.copyWith(fontWeight: FontWeight.bold, color: white),
+                  ),
                   // Image.asset(
                   //   'assets/images/logo-with-text.png',
                   //   height: MediaQuery.sizeOf(context).height * 0.25,
